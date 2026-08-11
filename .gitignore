@@ -1,0 +1,13 @@
+# Terraform cache
+.terraform/
+terra-key-ec2
+# State files
+*.tfstate
+*.tfstate.*
+
+# Variables containing secrets
+*.tfvars
+
+# Crash logs
+crash.log
+``
