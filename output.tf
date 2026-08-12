@@ -10,3 +10,11 @@ output "ec2_instance_public_dns" {
 output "ec2_instance_private_ip" {
   value = aws_instance.my_instance.private_ip
 }
+
+output "vpc_id" {
+  value = aws_vpc.main.id
+}
+
+output "subnet_id" {
+  value = aws_subnet.terraform_public_subnet.id
+}

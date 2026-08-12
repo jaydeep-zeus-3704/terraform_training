@@ -1,24 +1,15 @@
-variable "instance_type"{
-    type = string
+variable "instance_type" {
+  type = string
 }
 
 variable "vpc_name" {
-   type = string
+  type = string
 }
 
-
-
-variable "route_table_name"{
-    type = string
+variable "route_table_name" {
+  type = string
 }
 
-variable "ingress_ssh_cidr"{
-    type = list(string )
-}
-
-variable "ingress_http_cidr" {
-  type = list(string )
-}
 
 variable "subnet_name" {
   type = string
@@ -34,4 +25,12 @@ variable "project" {
 
 variable "vpc_cidr" {
   type = string
+}
+variable "inbound_rules" {
+   type = map(object({
+       from_port=number
+       to_port=number
+       protocol=string
+       cidr_blocks=list(string) 
+   }))   
 }
