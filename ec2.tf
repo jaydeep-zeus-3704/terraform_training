@@ -6,9 +6,9 @@ resource "aws_key_pair" "terraform_key_pair" {
 
 # EC2 instance
 resource "aws_instance" "my_instance" {
-  subnet_id              = aws_subnet.terraform_public_subnet.id
+  subnet_id              = module.network.public_subnet_id
   key_name               = aws_key_pair.terraform_key_pair.key_name
-  vpc_security_group_ids = [aws_security_group.my_security_group.id]
+  vpc_security_group_ids = [module.network.public_security_group_id]
   instance_type          = var.instance_type
   ami                    = "ami-01a00762f46d584a1"
   user_data              = file("install_nginx.sh")
