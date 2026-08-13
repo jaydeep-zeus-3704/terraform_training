@@ -1,9 +1,4 @@
 
-
-variable "vpc_cidr" {
-   type = string
-}
-
 variable "inbound_rules" {
    type = map(object({
        from_port=number
@@ -22,15 +17,5 @@ variable "outbound_rules" {
     }))
 }
 
-variable "subnet_id" {
-   type = string
 
-}
 
-variable "project" {
-  type = string
-}
-
-variable "env" {
-  type = string
-}

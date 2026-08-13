@@ -3,8 +3,7 @@ resource "aws_security_group" "my_security_group" {
   description = "this will add a tf generated security group"
   region      = "ap-south-1"
   vpc_id      = aws_vpc.main.id
-
-
+  
   #inbound rules
   dynamic "ingress" {
     for_each = var.inbound_rules

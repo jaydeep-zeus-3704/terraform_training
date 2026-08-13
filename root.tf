@@ -1,28 +1,37 @@
+locals {
+  environments = {
+    nonprod = {
+      cidr = "10.10.0.0/16"
+      subnet_id="10.10.1.0/24"
+    }
+    prod = {
+      cidr = "10.20.0.0/16"
+      subnet_id="10.20.1.0/24"
+    }
+  }
+}
+
+
 module "network" {
+  for_each = local.environments
   source = "./network"
-  inbound_rules = {
-    "http" = {
-      to_port     = 80
-      from_port   = 80
-      cidr_blocks = ["172.17.224.1/32", "192.168.10.64/32", "192.168.17.89/32"]
-      protocol    = "tcp"
-    }
-    "ssh" = {
-      to_port     = 22
-      from_port   = 22
-      cidr_blocks = ["172.17.224.1/32", "125.99.53.122/32", "136.232.247.226/32", "152.52.54.98/32", "27.107.114.198/32"]
-      protocol    = "tcp"
-    }
-  }
-  outbound_rules = {
-    "-1" = {
-      to_port=0
-      from_port=0
-      cidr_blocks=["0.0.0.0/0"]
-      protocol="tcp"
-    }
-  }
-  vpc_cidr    = "10.0.0.0/16"
-  project     = var.project
-  env         = var.env
+  inbound_rules = var.inbound_rules
+  outbound_rules = var.outbound_rules
+  vpc_cidr = each.value.cidr
+  project  = var.project
+  env      = each.key
+  subnet_id = each.value.subnet_id
+}
+
+
+module "ec2" {
+  for_each = local.environments
+  source = "./ec2"
+  ami = "ami-01a00762f46d584a1"
+  instance_type = "t2.micro"
+  project = var.project
+  env = each.key
+  subnet_id = module.network[each.key].public_subnet_id
+  vpc_security_group_ids=[module.network[each.key].public_security_group_id]
+  key_name = aws_key_pair.terraform_key_pair.key_name
 }

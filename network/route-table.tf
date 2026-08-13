@@ -4,6 +4,7 @@ resource "aws_route_table" "terraform_route_table" {
     cidr_block = "0.0.0.0/0"
     gateway_id = aws_internet_gateway.gateway.id
   }
+  
   tags = {
     Name = format("%s-%s-%s-rt", var.project, var.env, aws_subnet.terraform_public_subnet.id)
   }
